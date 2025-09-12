@@ -5,7 +5,6 @@ The project serves as a learning playground, exploring the creation of a persist
 
 ---
 
-## 🚀 About the project
 **PaloMUD** started as a prototype built "from scratch," handling Telnet sockets manually in Python.
 With Evennia, the project now evolves into a more robust and flexible foundation, making it possible to develop:
 
@@ -17,7 +16,7 @@ With Evennia, the project now evolves into a more robust and flexible foundation
 
 ---
 
-## 🛠 Tech stack
+## stack
 - **Python 3.10+**
 - **[Evennia](https://github.com/evennia/evennia)** – framework for creating MUDs, MU*s, and text-based games
 - Telnet / Webclient (included with Evennia)
@@ -25,7 +24,7 @@ With Evennia, the project now evolves into a more robust and flexible foundation
 
 ---
 
-## 📦 Installation & Setup
+## Installation & Setup
 
 ### 1. Clone the repository
 ```bash
@@ -60,7 +59,7 @@ We personally created this project to be played on [Mudlet](https://www.mudlet.o
 
 ---
 
-## 🌍 Roadmap
+## Roadmap
 
 - [ ]  Define the world setting and initial lore
 - [ ]  Build example maps and rooms
@@ -70,7 +69,7 @@ We personally created this project to be played on [Mudlet](https://www.mudlet.o
 
 ---
 
-## 📖 References
+## References
 
 - [Evennia Documentation](https://www.evennia.com/docs/latest/)
 - [Evennia GitHub Repository](https://github.com/evennia/evennia)
@@ -78,7 +77,7 @@ We personally created this project to be played on [Mudlet](https://www.mudlet.o
 
 ---
 
-## 📜 License
+## License
 
 This project is open-source under the MIT license.
 
