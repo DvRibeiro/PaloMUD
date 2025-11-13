@@ -20,5 +20,5 @@ class Room(ObjectParent, DefaultRoom):
     See mygame/typeclasses/objects.py for a list of
     properties and methods available on all Objects.
     """
-
-    pass
+    def at_object_creation(self):
+        self.db.desc = "Uma sala escura e úmida da masmorra."    

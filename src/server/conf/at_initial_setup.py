@@ -15,5 +15,11 @@ does what you expect it to.
 """
 
 
+from world.world_setup import setup_world
+
 def at_initial_setup():
-    pass
+    """
+    This is called once, when the server starts for the very first time.
+    """
+    # Create the game world
+    setup_world()

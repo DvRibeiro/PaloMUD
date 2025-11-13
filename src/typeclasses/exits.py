@@ -23,4 +23,6 @@ class Exit(ObjectParent, DefaultExit):
 
     """
 
-    pass
+    def at_traverse(self, traversing_object, target_location):
+        traversing_object.msg(f"Você vai para {target_location.key}.")
+        super().at_traverse(traversing_object, target_location)

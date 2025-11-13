@@ -31,8 +31,14 @@ from evennia.settings_default import *
 # Evennia base server config
 ######################################################################
 
-# This is the name of your game. Make it catchy!
-SERVERNAME = "src"
+# # This is the name of your game. Make it catchy!
+# SERVERNAME = "PaloMUD"
+
+# # The start location for new characters. This will be updated with the correct dbref later.
+# START_LOCATION = "#3"
+
+# # The default home location for characters. This will be updated with the correct dbref later.
+# DEFAULT_HOME = "#4"
 
 
 ######################################################################

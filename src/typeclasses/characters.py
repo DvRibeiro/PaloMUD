@@ -8,19 +8,42 @@ creation commands.
 
 """
 
-from evennia.objects.objects import DefaultCharacter
+from evennia import DefaultCharacter
+from commands.cmdset_character import CharacterCmdSet
 
-from .objects import ObjectParent
+class Character(DefaultCharacter):
+    def at_object_creation(self):
+        """
+        Chamado quando o personagem é criado pela primeira vez.
+        """
+        super().at_object_creation()
+        self.cmdset.add_default(CharacterCmdSet, permanent=True)
 
+        # Atributos base do personagem
+        self.db.strength = 5
+        self.db.dexterity = 5
+        self.db.intelligence = 5
+        self.db.vitality = 5
 
-class Character(ObjectParent, DefaultCharacter):
-    """
-    The Character just re-implements some of the Object's methods and hooks
-    to represent a Character entity in-game.
+        # Atributos derivados
+        self.db.max_hp = self.db.vitality * 10
+        self.db.hp = self.db.max_hp
 
-    See mygame/typeclasses/objects.py for a list of
-    properties and methods available on all Object child classes like this.
+        # Inventário e Memórias
+        self.db.inventory = []
+        self.db.memories = []
 
-    """
+        # Descrição inicial
+        self.db.desc = "Uma figura sem uma identidade clara, um recomeço em branco."
 
-    pass
+    def return_appearance(self, looker, **kwargs):
+        """
+        Define como o personagem é descrito.
+        """
+        if not looker:
+            return ""
+        
+        # Adiciona a descrição e o estado de saúde
+        text = super().return_appearance(looker, **kwargs)
+        health_status = f"\n|cSaúde:|n {self.db.hp}/{self.db.max_hp}"
+        return text + health_status

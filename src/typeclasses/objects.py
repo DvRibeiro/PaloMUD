@@ -215,3 +215,15 @@ class Object(ObjectParent, DefaultObject):
     """
 
     pass
+
+class Item(DefaultObject):
+    def at_object_creation(self):
+        self.db.pickable = True
+
+    def at_get(self, getter):
+        getter.db.inventory.append(self)
+        getter.msg(f"Você pegou {self.key}.")
+
+    def at_drop(self, dropper):
+        dropper.db.inventory.remove(self)
+        dropper.msg(f"Você soltou {self.key}.")
