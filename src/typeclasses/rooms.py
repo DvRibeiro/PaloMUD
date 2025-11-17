@@ -11,6 +11,9 @@ from .objects import ObjectParent
 
 
 class Room(ObjectParent, DefaultRoom):
+    def at_object_receive(self, obj, source_location, move_type="move", **kwargs):
+        if obj.has_account:
+            self.msg_contents(f"{obj.key} entra na sala.")    
     """
     Rooms are like any Object, except their location is None
     (which is default). They also use basetype_setup() to

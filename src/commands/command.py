@@ -32,6 +32,200 @@ class Command(BaseCommand):
     #
     pass
 
+import random
+
+from evennia import Command
+import random
+
+# commands/inventory.py
+
+from evennia import Command
+
+class CmdInventario(Command):
+    """
+    Lista os itens no inventário do jogador.
+
+    Uso:
+        inventario
+    """
+    key = "inventario"
+    aliases = ["inv"]
+    help_category = "Utilidades"
+
+    def func(self):
+        inventario = self.caller.db.inventory or []
+        
+        # Se o inventário for uma lista com objetos
+        if not inventario:
+            self.caller.msg("Você não possui itens no inventário.")
+            return
+        
+        # Cria uma lista de nomes dos itens
+        itens_formatados = []
+        for item in inventario:
+            nome = item.key
+            itens_formatados.append(f"- {nome}")
+        
+        # Exibe os itens para o jogador
+        itens_texto = "\n".join(itens_formatados)
+        self.caller.msg(f"Você está carregando:\n{itens_texto}")
+
+class CmdEquipar(Command):
+    """
+    Equipa um item do seu inventário.
+
+    Uso:
+        equipar <item>
+    """
+    key = "equipar"
+    help_category = "Inventário"
+
+    def func(self):
+        if not self.args:
+            self.caller.msg("Equipar o quê?")
+            return
+        
+        item_name = self.args.strip().lower()
+        inventario = self.caller.db.inventory
+        
+        for item in inventario:
+            if item.key.lower() == item_name:
+                self.caller.equipar(item)
+                return
+        
+        self.caller.msg("Você não possui esse item para equipar.")
+
+class CmdPegar(Command):
+    """
+    Pega um item da sala.
+
+    Uso:
+        pegar <item>
+    """
+    key = "pegar"
+    help_category = "Inventário"
+
+    def func(self):
+        if not self.args:
+            self.caller.msg("Pegar o quê?")
+            return
+
+        item = self.caller.search(self.args, location=self.caller.location)
+        if not item:
+            return
+
+        # Move o item para o inventário
+        self.caller.adicionar_item(item)
+        item.location = None  # tira o item da sala
+
+class CmdAtacar(Command):
+    """
+    Ataca um inimigo na sala.
+
+    Uso:
+        atacar <alvo>
+
+    Exemplo:
+        atacar goblin
+    """
+    key = "atacar"
+    help_category = "Combate"
+
+    def func(self):
+        if not self.args:
+            self.caller.msg("Atacar quem?")
+            return
+        
+        alvo = self.caller.search(self.args)
+        if not alvo:
+            return
+        
+        if not hasattr(alvo, "receber_dano"):
+            self.caller.msg("Isso não pode ser atacado.")
+            return
+
+
+        # TODO: considerar armas equipadas para dano
+        # if self.caller.db.equipado:
+        #     dano = random.randint(5, 10)
+        #     arma = self.caller.db.equipado.key
+        #     self.caller.msg(f"Você usa {arma} e causa {dano} de dano!")
+        # else:
+        #     dano = random.randint(2, 4)
+        #     self.caller.msg(f"Você ataca desarmado e causa {dano} de dano...")
+
+        dano = random.randint(2, 6)  # dano variável
+        self.caller.msg(f"|gVocê ataca {alvo.key} e causa {dano} de dano!|n")
+        alvo.msg(f"|r{self.caller.key} ataca você e causa {dano} de dano!|n")
+        alvo.receber_dano(dano, self.caller)
+
+class CmdFalar(Command):
+    key = "falar"
+    help_category = "Interação"
+
+    def func(self):
+        if not self.args:
+            self.caller.msg("Falar com quem?")
+            return
+        alvo = self.caller.search(self.args)
+        if not alvo or not hasattr(alvo, "talk"):
+            self.caller.msg("Esse personagem não quer conversar.")
+            return
+        alvo.talk(self.caller)
+
+class CmdComprar(Command):
+    key = "comprar"
+    help_category = "Interação"
+
+    def func(self):
+        if not self.args:
+            self.caller.msg("Comprar o quê?")
+            return
+        alvo = self.caller.search("mercador")
+        if not alvo or not hasattr(alvo, "comprar"):
+            self.caller.msg("Não há comerciante aqui.")
+            return
+        alvo.comprar(self.caller, self.args)
+
+class CmdListarItens(Command):
+    key = "listaritens"
+    help_category = "Interação"
+
+    def func(self):
+        if not self.args:
+            self.caller.msg("Indique de qual mercador quer listar os itens")
+            return
+        alvo = self.caller.search("mercador")
+        if not alvo or not hasattr(alvo, "listar_itens"):
+            self.caller.msg("Não há mercador aqui.")
+            return
+        alvo.listar_itens(self.caller)        
+
+class CmdResolver(Command):
+    key = "resolver"
+    help_category = "Puzzle"
+
+    def func(self):
+        if not self.args:
+            self.caller.msg("Resolver o quê?")
+            return
+        armadilha = self.caller.search(self.args)
+        if not armadilha or not hasattr(armadilha, "resolver"):
+            self.caller.msg("Não há nada para resolver.")
+            return
+        resposta = yield("Qual é a resposta?")
+        armadilha.resolver(self.caller, resposta)
+
+class CmdLembrar(Command):
+    key = "lembrar"
+    help_category = "Memória"
+
+    def func(self):
+        """
+        O jogador tenta acessar uma memória perdida.
+        """
+        self.caller.lembrar()
+
 
 # -------------------------------------------------------------
 #

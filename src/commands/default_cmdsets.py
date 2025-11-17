@@ -15,6 +15,7 @@ own cmdsets by inheriting from them or directly from `evennia.CmdSet`.
 """
 
 from evennia import default_cmds
+from commands.command import CmdAtacar, CmdFalar, CmdComprar, CmdResolver, CmdLembrar, CmdListarItens, CmdEquipar, CmdInventario, CmdPegar
 
 
 class CharacterCmdSet(default_cmds.CharacterCmdSet):
@@ -31,6 +32,15 @@ class CharacterCmdSet(default_cmds.CharacterCmdSet):
         Populates the cmdset
         """
         super().at_cmdset_creation()
+        self.add(CmdPegar())        
+        self.add(CmdEquipar())        
+        self.add(CmdInventario())                
+        self.add(CmdAtacar())
+        self.add(CmdFalar())
+        self.add(CmdComprar())
+        self.add(CmdResolver())
+        self.add(CmdLembrar())
+        self.add(CmdListarItens())        
         #
         # any commands you add below will overload the default ones.
         #

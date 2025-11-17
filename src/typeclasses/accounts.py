@@ -24,8 +24,23 @@ several more options for customizing the Guest account system.
 
 from evennia.accounts.accounts import DefaultAccount, DefaultGuest
 
+# --- NOVO: Título em ASCII Art ---
+ASCII_TITLE = f"""
+██████╗  █████╗ ██╗      ██████╗ ███╗   ███╗██╗   ██╗██████╗ 
+██╔══██╗██╔══██╗██║     ██╔═══██╗████╗ ████║██║   ██║██╔══██╗
+██████╔╝███████║██║     ██║   ██║██╔████╔██║██║   ██║██║  ██║
+██╔═══╝ ██╔══██║██║     ██║   ██║██║╚██╔╝██║██║   ██║██║  ██║
+██║     ██║  ██║███████╗╚██████╔╝██║ ╚═╝ ██║╚██████╔╝██████╔╝
+╚═╝     ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ 
+
+                   O Véu de Éter
+"""
 
 class Account(DefaultAccount):
+    def at_look(self, target=None, **kwargs):
+        self.msg("|w" + ASCII_TITLE + "|n")
+        return super().at_look(target, **kwargs)
+
     """
     An Account is the actual OOC player entity. It doesn't exist in the game,
     but puppets characters.
